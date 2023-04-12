@@ -14,28 +14,35 @@ def readFileForm():
     return d
 
 
-def readFileImage():
+def getImageFiles():
     tmp = []
-    target_list = []
     path_to_files = os.path.join('dataset/data_subset', '*')
-    d = readFileForm()
     for filename in sorted(glob.glob(path_to_files)):
         tmp.append(filename)
+    return tmp
+
+
+def getImageTargets(dic):
+    target_list = []
+    path_to_files = os.path.join('dataset/data_subset', '*')
+    for filename in sorted(glob.glob(path_to_files)):
         image_name = filename.split('/')[-1]
         file, ext = os.path.splitext(image_name)
         parts = file.split('-')
         form = parts[0] + '-' + parts[1]
-        for key in d:
+        for key in dic:
             if key == form:
-                target_list.append(str(d[form]))
-    img_files = np.asarray(tmp)
-    img_targets = np.asarray(target_list)
-    print(img_files.shape)
-    print(img_targets.shape)
+                target_list.append(str(dic[form]))
+    return target_list
 
 
 def main() -> int:
-    readFileImage()
+    dic = readFileForm()
+    img_files = np.asarray(getImageFiles())
+    img_targets = np.asarray(getImageTargets(dic))
+
+    print(img_files.shape)
+    print(img_targets.shape)
     return 0
 
 
