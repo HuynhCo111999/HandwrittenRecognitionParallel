@@ -11,6 +11,7 @@ from keras.utils import to_categorical
 from sklearn.utils import shuffle
 from keras.callbacks import ModelCheckpoint
 from random import sample
+import time
 
 batch_size = 8
 num_classes = 50
@@ -18,6 +19,50 @@ row, col, ch = 113, 113, 1
 nb_epoch = 8
 samples_per_epoch = 3268
 nb_val_samples = 842
+
+
+@jit
+def readFileForm():
+    start_time = time.time()
+    d = {}
+    with open('dataset/result.txt') as f:
+        for line in f:
+            key = line.split(' ')[0]
+            writer = line.split(' ')[1]
+            d[key] = writer
+    end_time = time.time()  # lưu thời gian kết thúc
+    duration = end_time - start_time
+    print("Thời gian chạy function là: ", duration, "giây")
+    return d
+
+
+def getImageFiles():
+    tmp = []
+    path_to_files = os.path.join('dataset/data_subset', '*')
+    for filename in sorted(glob.glob(path_to_files)):
+        tmp.append(filename)
+    return tmp
+
+
+def getImageTargets(dic):
+    target_list = []
+    path_to_files = os.path.join('dataset/data_subset', '*')
+    for filename in sorted(glob.glob(path_to_files)):
+        image_name = filename.split('/')[-1]
+        file, ext = os.path.splitext(image_name)
+        parts = file.split('-')
+        form = parts[0] + '-' + parts[1]
+        for key in dic:
+            if key == form:
+                target_list.append(str(dic[form]))
+    return target_list
+
+
+def encodeLabel(img_targets):
+    encoder = LabelEncoder()
+    encoder.fit(img_targets)
+    encoded_Y = encoder.transform(img_targets)
+    return encoded_Y
 
 
 @jit(nopython=True)
@@ -78,3 +123,12 @@ def generate_data(samples, target_files, batch_size=batch_size, factor=0.1):
             y_train = to_categorical(y_train, num_classes)
 
             yield shuffle(X_train, y_train)
+
+
+def main() -> int:
+    dic = readFileForm()
+    print(dic)
+
+
+if __name__ == '__main__':
+    sys.exit(main())
