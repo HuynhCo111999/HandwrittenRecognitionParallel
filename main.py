@@ -11,6 +11,7 @@ from sklearn.utils import shuffle
 from models.CNN import ModelCNN
 from keras.callbacks import ModelCheckpoint
 from random import sample
+import time
 
 batch_size = 8
 num_classes = 50
@@ -21,12 +22,16 @@ nb_val_samples = 842
 
 
 def readFileForm():
+    start_time = time.time()
     d = {}
     with open('dataset/result.txt') as f:
         for line in f:
             key = line.split(' ')[0]
             writer = line.split(' ')[1]
             d[key] = writer
+    end_time = time.time()  # lưu thời gian kết thúc
+    duration = end_time - start_time
+    print("Thời gian chạy function là: ", duration, "giây")
     return d
 
 
@@ -152,10 +157,10 @@ def main() -> int:
         filepath=filepath, verbose=1, save_best_only=False)
     callbacks_list = [checkpoint]
 
-    # # Model fit generator
-    # modelCNN.fit_generator(train_generator, steps_per_epoch=samples_per_epoch/batch_size,
-    #                        validation_data=validation_generator,
-    #                        validation_steps=nb_val_samples, epochs=nb_epoch, verbose=1, callbacks=callbacks_list)
+    # Model fit generator
+    modelCNN.fit_generator(train_generator, steps_per_epoch=samples_per_epoch/batch_size,
+                           validation_data=validation_generator,
+                           validation_steps=nb_val_samples, epochs=nb_epoch, verbose=1, callbacks=callbacks_list)
 
     modelCNN.load_weights(filepath)
     scores = modelCNN.evaluate_generator(test_generator, 842)
