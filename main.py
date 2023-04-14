@@ -9,11 +9,15 @@ from PIL import Image
 from keras.utils import to_categorical
 from sklearn.utils import shuffle
 from models.CNN import ModelCNN
-
+from keras.callbacks import ModelCheckpoint
+from random import sample
 
 batch_size = 8
 num_classes = 50
 row, col, ch = 113, 113, 1
+nb_epoch = 8
+samples_per_epoch = 3268
+nb_val_samples = 842
 
 
 def readFileForm():
@@ -142,6 +146,20 @@ def main() -> int:
 
     modelCNN = ModelCNN()
     modelCNN.summary()
+
+    filepath = "low_loss.hdf5"
+    checkpoint = ModelCheckpoint(
+        filepath=filepath, verbose=1, save_best_only=False)
+    callbacks_list = [checkpoint]
+
+    # # Model fit generator
+    # modelCNN.fit_generator(train_generator, steps_per_epoch=samples_per_epoch/batch_size,
+    #                        validation_data=validation_generator,
+    #                        validation_steps=nb_val_samples, epochs=nb_epoch, verbose=1, callbacks=callbacks_list)
+
+    modelCNN.load_weights(filepath)
+    scores = modelCNN.evaluate_generator(test_generator, 842)
+    print("Accuracy = ", scores[1])
 
     return 0
 
