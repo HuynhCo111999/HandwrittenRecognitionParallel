@@ -1,4 +1,6 @@
 from layer import *
+import numpy as np
+
 class Softmax(Layer):
     def forward(self, input):
         self.input = input

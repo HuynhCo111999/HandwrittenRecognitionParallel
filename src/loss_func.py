@@ -1,4 +1,6 @@
 from layer import *
+import numpy as np
+
 #Loss function 
 def reshape_labels(prediction,labels):
     label_reshape = np.zeros(prediction.shape)

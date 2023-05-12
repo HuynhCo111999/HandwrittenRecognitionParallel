@@ -1,4 +1,5 @@
 from layer import *
+import numpy as np
 
 class MaxPoolingLayer(Layer):
   def __init__(self, input_shape, kernel_size, stride):

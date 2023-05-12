@@ -1,4 +1,5 @@
 from layer import *
+import numpy as np
 
 class Activation(Layer):
     def __init__(self, activation, activation_prime):
