@@ -1,5 +1,5 @@
-from layer import *
 import numpy as np
+from layer import Layer
 
 class Softmax(Layer):
     def forward(self, input):

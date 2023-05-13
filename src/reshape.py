@@ -1,5 +1,5 @@
-from layer import * 
 import numpy as np
+from layer import Layer
 
 class Reshape(Layer):
     def __init__(self, input_shape, output_shape):

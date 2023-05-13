@@ -7,7 +7,7 @@ def predict(network, input):
 def train(network, loss, loss_prime, x_train, y_train, epochs = 1000, learning_rate = 0.01, verbose = True):
     for e in range(epochs):
         error = 0
-        for x, y in zip(x_train, y_train):#1000, 2000, 3000
+        for x, y in zip(x_train, y_train):
             # forward
             output = predict(network, x)
 

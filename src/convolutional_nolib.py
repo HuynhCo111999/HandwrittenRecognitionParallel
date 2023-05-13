@@ -1,18 +1,9 @@
 import numpy as np
-from layer import Layer
-from scipy import signal
+from layer import Layer 
+from correlate import *
 
-class Convolutional(Layer): 
+class CNNLayer(Layer): #CNN su dung ham correlate o tren
     def __init__(self, input_shape, kernel_size, depth):
-        '''
-        input_shape: A tuple contain following:
-        + input_depth: number of color channels
-        + input_height: the height of input
-        + input_width: the width of input
-
-        kernel_size: size of kernel matrix: ex: 3 -> 3x3, 5 -> 5x5,...
-        depth: number of different kernel, also the depth of output.
-        '''
         input_depth, input_height, input_width = input_shape
         self.depth = depth
         self.input_shape = input_shape
@@ -29,17 +20,20 @@ class Convolutional(Layer):
         self.output = np.copy(self.biases)
         for i in range(self.depth):
             for j in range(self.input_depth):
-                self.output[i] += signal.correlate2d(self.input[j], self.kernels[i, j], "valid")
+                self.output[i] += correlate(self.input[j], self.kernels[i, j], 1, "valid")
+                #self.output[i] += signal.correlate2d(self.input[j], self.kernels[i, j], "valid")
         return self.output
 
     def backward(self, output_gradient, learning_rate):
         kernels_gradient = np.zeros(self.kernels_shape)
         input_gradient = np.zeros(self.input_shape)
-
+        kernels_rot_180=np.rot90(self.kernels,2)
         for i in range(self.depth):
             for j in range(self.input_depth):
-                kernels_gradient[i, j] = signal.correlate2d(self.input[j], output_gradient[i], "valid")
-                input_gradient[j] += signal.convolve2d(output_gradient[i], self.kernels[i, j], "full")
+                kernels_gradient[i, j] = correlate(self.input[j], output_gradient[i], 1, "valid")
+                input_gradient[j] += correlate(output_gradient[i], kernels_rot_180[i, j], 1, "full")
+                #kernels_gradient[i, j] = signal.correlate2d(self.input[j], output_gradient[i], "valid")
+                #input_gradient[j] += signal.convolve2d(output_gradient[i], self.kernels[i, j], "full")
 
         self.kernels -= learning_rate * kernels_gradient
         self.biases -= learning_rate * output_gradient

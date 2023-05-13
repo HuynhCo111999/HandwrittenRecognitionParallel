@@ -1,4 +1,3 @@
-from layer import *
 import numpy as np
 
 #Loss function 
@@ -42,20 +41,21 @@ def grad_softmax(x):
                 else:
                     jacobian[i][j] =  x[k][i] * (0 - x[k][j])
         grad_softmax.append(jacobian)            
-    return(np.array(grad_softmax))
+    return(np.array(grad_softmax))   
+
 
     #Step 1 - Calculate the Gradient of the loss w.r.t the outputs
     grad_loss_outputs = grad_loss(prediction, labels)
-
+    
     #Step 2 - Calculate the Gradient of each output w.r.t each z, where output[i] = softmax(z[i])
     grad_outputs_z = grad_softmax(prediction)
 
 # loss function and its derivative
 def mse(y_true, y_pred):
-    return np.mean(np.power(y_true-y_pred, 2));
+    return np.mean(np.power(y_true-y_pred, 2))
 
 def mse_prime(y_true, y_pred):
-    return 2*(y_pred-y_true)/y_true.size;
+    return 2*(y_pred-y_true)/y_true.size
 
 def binary_cross_entropy(y_true, y_pred):
     return np.mean(-y_true * np.log(y_pred) - (1 - y_true) * np.log(1 - y_pred))
