@@ -1,17 +1,13 @@
 # HandwrittenRecognitionParallel
 
-# Tuyến tính.
+# Đặt vấn đề
 
-run: python main.py
+# Hướng dẫn chạy
+Chạy code tuần tự (dùng hàm correlate2d của thư viện scipy): !python sequential1.py
+Chạy code tuần tự (dùng hàm correlate tự viết): !python sequential2.py
 
-Model CNN:
-
-- Chia thành 8 epoch để chạy
-- Mỗi epoch thời gian chạy trung bình khoảng 1250s
-
-Val_accurracy: 0.6124
-Test_accurracy: 0.6219488382339478
-
-# Song song hóa
-
-run: python main-parallel.py
+# So sánh thời gian chạy
+Với phiên bản tuần tự, do tốc độ chạy khá chậm nên nhóm chỉ tiến hành phân loại trên tập dữ liệu `mnist` với 3 label 0, 1, 2 với 20 epochs.
+- Tuần tự 1: ~ 170s (tầm 2m30s - 3m)
+- Tuần tự 2: ~ 1150s (tầm 17m - 19m)
+Ta thấy với phiên bản tuần tự chạy hàm correlate2d do nhóm tự viết thì thời gian chạy rất lâu (chậm hơn tầm 6-7 lần với hàm dùng thư viện của scipy) nên bài toán này cần song song hóa để cải thiện tốc độ.
