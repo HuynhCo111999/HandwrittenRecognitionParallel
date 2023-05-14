@@ -3,8 +3,8 @@
 # Đặt vấn đề
 
 # Hướng dẫn chạy
-Chạy code tuần tự (dùng hàm correlate2d của thư viện scipy): !python sequential1.py
-Chạy code tuần tự (dùng hàm correlate tự viết): !python sequential2.py
+- Chạy code tuần tự (dùng hàm correlate2d của thư viện scipy): !python sequential1.py
+- Chạy code tuần tự (dùng hàm correlate tự viết): !python sequential2.py
 
 # So sánh thời gian chạy
 Với phiên bản tuần tự, do tốc độ chạy khá chậm nên nhóm chỉ tiến hành phân loại trên tập dữ liệu `mnist` với 3 label 0, 1, 2 với 20 epochs.
