@@ -64,7 +64,6 @@ print(f'Processing time: {end - start} s')
 true_label = 0
 for x, y in zip(x_test, y_test):
     output = predict(network, x)
-    print(f"pred: {np.argmax(output)}, true: {np.argmax(y)}")
     if np.argmax(output) == np.argmax(y):
         true_label += 1
 
